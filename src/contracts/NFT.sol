@@ -24,15 +24,6 @@ contract CustomNFT is ERC721, Ownable {
     constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {}
  event LogMessage(string message);
 
-    // constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {}
-
-   function issueNFT(
-    address wallet,
-    string memory imageUrl,
-    uint256  nftType,
-    uint256 value
-) external {
-}
 
 function issueNFT(
     address wallet,
@@ -40,7 +31,7 @@ function issueNFT(
     uint256 nftType,
     uint256 value,
     string memory sellerId
-) internal {
+) external {
     require(wallet != address(0), "Invalid wallet address");
     require(msg.sender != wallet, "Wallet cannot be the same as the sender");
 
@@ -115,6 +106,16 @@ function autoExpireNFT(uint256 tokenId) external {
         _burn(tokenId);
     }
 }
+
+   function getAllMintedNFTs() external view returns (NFTData[] memory) {
+        NFTData[] memory allNFTs = new NFTData[](_tokenCounter.current());
+
+        for (uint256 i = 0; i < _tokenCounter.current(); i++) {
+            allNFTs[i] = _nftData[i];
+        }
+
+        return allNFTs;
+    }
 
    
 
